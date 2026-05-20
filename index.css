@@ -1,3 +1,7 @@
+:root {
+    --header-color: #FFFFFF;
+}
+
 body {
     margin: 0;
 } 
@@ -5,4 +9,7 @@ body {
 .site-header {
     background-image: url("./images/bg-image.png");
     background-repeat: no-repeat;
+    height: 10.438rem;
+    width: 37.5rem;
+    color: var(--header-color);
 }
