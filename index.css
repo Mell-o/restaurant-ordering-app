@@ -12,6 +12,7 @@
 body {
     margin: 0 auto;
     width: 37.5rem;
+    font-family: "Smythe", system-ui;
 } 
 
 .site-header {
