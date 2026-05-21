@@ -17,13 +17,3 @@ function buildMenuItemsHtml() {
         `
     })
 }
-
-                <li class="menu-item">
-                    <span class="food-emoji" role="img" aria-label="${name}"></span>
-                    <div class="menu-item-content">
-                        <h2>Pizza</h2>
-                        <p class="food-ingredients">pepperoni, mushroom, mozarella</p>
-                        <p class="food-price">$14</p>
-                    </div>
-                    <button type="button" onclick="">+</button>
-                </li>
