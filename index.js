@@ -1,21 +1,114 @@
 import { menuArray } from "./data.js";
 
 const foodMenuList = document.querySelector(".food-menu ul")
+let mainSection = document.querySelector("main")
+const orderSection = document.querySelector(".orderPage")
+let cartObj = {}
+let totalPrice = 0
 
 function buildMenuItemsHtml() {
-    foodMenuList.innerHTML = menuArray.map(({name, ingredients, price, emoji}) => {
+    foodMenuList.innerHTML = menuArray.map(({name, ingredients, price, emoji, id}) => {
         return `
-                <li class="menu-item">
+                <li class="menu-item" id="${id}">
                     <span class="food-emoji" role="img" aria-label="${name}">${emoji}</span>
                     <div class="menu-item-content">
                         <h2>${name}</h2>
                         <p class="food-ingredients">${ingredients.join(", ")}</p>
                         <p class="food-price">$${price}</p>
                     </div>
-                    <button class="add-menu-item-btn" type="button" onclick="">+</button>
+                    <button class="add-menu-item-btn" type="button">+</button>
                 </li>
         `
     }).join("")
+
+    document.querySelectorAll(".add-menu-item-btn").forEach(addMenuItemBtn => {
+        addMenuItemBtn.addEventListener("click", function(event){
+            if (!orderSection.innerHTML) {
+                buildOrderSection ()
+            }
+            
+            addMenuItem(event.target.parentElement.id)
+        })
+    })
+}
+
+
+function addMenuItem(id){
+    let foodName = ""
+    const menuItem = menuArray.reduce((acc, {name, price, id: itemId}) => {
+        if (Number(id) === itemId) {
+            acc[name] ??= []
+
+            acc[name].push(name)
+            acc[name].push(price)
+            acc[name].push(itemId)
+
+            foodName = name
+        }
+        return acc
+    }, {})
+
+    const {[foodName]: [name, price, itemId]} = menuItem
+
+    if (!Object.hasOwn(cartObj, name)) {
+        Object.assign(cartObj, menuItem)
+    }
+
+    renderCart()
+    renderTotalPrice()
+}
+
+function renderCart(){
+    document.querySelector(".cart").innerHTML = Object.entries(cartObj)
+    .map(([name, [foodName, price, id]]) => {
+        return `
+        <li>
+            <div class="name-container" id="${id}">
+                <span>${foodName}</span>
+                <button class="remove-btn">remove</button>
+            </div>
+            <span class="food-price">$${price}
+            </span>
+        </li>
+        `
+    })
+    .join("")
+
+    document.querySelectorAll(".remove-btn").forEach((removeBtn) => {
+        removeBtn.addEventListener("click", function(event) {
+            removeMenuItem(event.target.parentElement.id)
+        })
+    })
+}
+
+function renderTotalPrice(){
+    totalPrice = Object.entries(cartObj).reduce((acc, [name, [foodName, price, id]]) => acc + price, 0)
+    document.querySelector(".total-price-container").innerHTML = `
+            <h2>Total price</h2>
+            <span class="food-price">$${totalPrice}</span>
+        `
+}
+
+function removeMenuItem(id){
+    cartObj = Object.fromEntries(
+        Object.entries(cartObj)
+        .filter(([name, [foodName, price, itemId]]) => itemId !== Number(id)))
+    
+    if (!Object.entries(cartObj).length) {
+        orderSection.innerHTML = ""
+    } else {
+        renderCart()
+        renderTotalPrice()
+    }
+}
+
+function buildOrderSection(){
+    orderSection.innerHTML = `
+        <h2>Your order</h2>
+        <ul class="cart"></ul>
+        <div class="total-price-container"></div>
+        <button class="complete-order-btn" type="button">Complete Order</button>
+    `
 }
 
 buildMenuItemsHtml()
