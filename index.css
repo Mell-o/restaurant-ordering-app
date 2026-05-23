@@ -115,22 +115,22 @@ p {
     bottom: 5.125rem;
 }
 
-.orderPage {
+.orderSummary {
     display: flex;
     flex-direction: column;
     font-size: 1.75rem;
 }
 
-.orderPage btn {
+.orderSummary btn {
     font-family: "Arimo", sans-serif;
 }
 
-.orderPage h2 {
+.orderSummary h2 {
     text-align: center;
     margin: 0 0 3rem 0;
 }
 
-.orderPage li {
+.orderSummary li {
     display: flex;
     justify-content: space-between;
     margin: 0 0 0.3rem 0;
@@ -152,7 +152,7 @@ p {
     margin: 0;
 }
 
-.orderPage .food-price {
+.orderSummary .food-price {
     align-self: flex-end;
 }
 

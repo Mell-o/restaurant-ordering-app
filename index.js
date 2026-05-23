@@ -2,7 +2,7 @@ import { menuArray } from "./data.js";
 
 const foodMenuList = document.querySelector(".food-menu ul")
 let mainSection = document.querySelector("main")
-const orderSection = document.querySelector(".orderPage")
+const orderSummary = document.querySelector(".orderSummary")
 let cartObj = {}
 let totalPrice = 0
 
@@ -23,8 +23,8 @@ function buildMenuItemsHtml() {
 
     document.querySelectorAll(".add-menu-item-btn").forEach(addMenuItemBtn => {
         addMenuItemBtn.addEventListener("click", function(event){
-            if (!orderSection.innerHTML) {
-                buildOrderSection ()
+            if (!orderSummary.innerHTML) {
+                buildOrderSummary()
             }
             
             addMenuItem(event.target.parentElement.id)
@@ -95,15 +95,15 @@ function removeMenuItem(id){
         .filter(([name, [foodName, price, itemId]]) => itemId !== Number(id)))
     
     if (!Object.entries(cartObj).length) {
-        orderSection.innerHTML = ""
+        orderSummary.innerHTML = ""
     } else {
         renderCart()
         renderTotalPrice()
     }
 }
 
-function buildOrderSection(){
-    orderSection.innerHTML = `
+function buildOrderSummary(){
+    orderSummary.innerHTML = `
         <h2>Your order</h2>
         <ul class="cart"></ul>
         <div class="total-price-container"></div>
