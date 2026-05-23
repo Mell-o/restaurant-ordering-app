@@ -5,6 +5,7 @@ let mainSection = document.querySelector("main")
 const orderSummary = document.querySelector(".orderSummary")
 let cartObj = {}
 let totalPrice = 0
+const paymentModal = document.querySelector(".payment-modal")
 
 function buildMenuItemsHtml() {
     foodMenuList.innerHTML = menuArray.map(({name, ingredients, price, emoji, id}) => {
@@ -109,6 +110,44 @@ function buildOrderSummary(){
         <div class="total-price-container"></div>
         <button class="complete-order-btn" type="button">Complete Order</button>
     `
+    document.querySelector(".complete-order-btn").addEventListener("click", function(){
+        getPaymentDetails()
+    })
+}
+
+function getPaymentDetails(){
+    paymentModal.innerHTML = `
+    <h1 class="payment-form-title">Enter card details</h1>
+    <form id="payment-form">
+        <input type="text" placeholder="Enter your name" required>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Enter card number" required>
+        <input type="text" inputmode="numeric" pattern="[0-9]{3,4}" placeholder="Enter CVV" required>
+        <button type="submit" class="pay-btn">Pay</button>
+    </form>
+    `
+
+    document.getElementById("payment-form").addEventListener("submit", function(e){
+        e.preventDefault()
+        closePaymentModal()
+        successNotification()
+    })
+
+    paymentModal.classList.toggle("hidden")
+    paymentModal.classList.toggle("visible")
+}
+
+function closePaymentModal(){
+    paymentModal.classList.toggle("visible")
+    paymentModal.classList.toggle("hidden")
+}
+
+function successNotification(){
+    orderSummary.innerHTML = `
+        <p class="success-notification">Thanks, James! Your order is on its way!</p>
+    `
+    setTimeout(() => {
+        orderSummary.innerHTML = ""
+    }, 2500)
 }
 
 buildMenuItemsHtml()
